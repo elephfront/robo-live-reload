@@ -13,16 +13,25 @@ declare(strict_types=1);
 namespace Elephfront\RoboLiveReload\Task;
 
 use Robo\Contract\TaskInterface;
+use Robo\Task\Base\loadTasks;
 use Robo\Task\BaseTask;
 
 class LiveReload extends BaseTask implements TaskInterface
 {
 
     /**
+     * Loads the `taskExec` method this class needs.
+     */
+    use loadTasks;
+
+    /**
+     * Start the LiveReload server as a background task.
      * @return \Robo\Result
      */
     public function run()
     {
-        // TODO: Implement run() method.
+        return $this->taskExec('php bin/elephfront-robo-live-reload.php')
+            ->background()
+            ->run();
     }
 }
