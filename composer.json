@@ -1,0 +1,31 @@
+{
+    "name": "elephfront/robo-live-reload",
+    "description": "Live reload mechanism for the Robo task runner when using it as a template builder",
+    "type": "robo-tasks",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yves P.",
+            "email": "havokinspiration@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "consolidation/robo": "*",
+        "cboden/ratchet": "^0.3.6",
+        "textalk/websocket": "^1.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Elephfront\\RoboLiveReload\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Elephfront\\RoboLiveReload\\Tests\\": "tests/TestCase"
+        }
+    }
+}
