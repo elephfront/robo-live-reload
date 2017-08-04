@@ -40,21 +40,21 @@ class LiveReload extends BaseTask implements TaskInterface
      *
      * @var string
      */
-    protected $bin;
+    protected $bin = 'vendor/bin/';
 
     /**
      * Port the WebSocket server should be opened to.
      *
      * @var int
      */
-    protected $port;
+    protected $port = 22222;
 
     /**
      * Host the WebSocket server should be hosted under.
      *
      * @var string
      */
-    protected $host;
+    protected $host = '127.0.0.1';
 
     /**
      * Sets the port the WebSocket server should expose.
@@ -62,7 +62,7 @@ class LiveReload extends BaseTask implements TaskInterface
      * @param int $port
      * @return $this
      */
-    public function port($port = 22222)
+    public function port($port)
     {
         $this->port = $port;
 
@@ -75,7 +75,7 @@ class LiveReload extends BaseTask implements TaskInterface
      * @param string $bin Host the WebSocket server should be hosted under.
      * @return $this
      */
-    public function bin($bin = 'vendor/bin/')
+    public function bin($bin)
     {
         $this->bin = rtrim($bin, '/') . '/';
 
@@ -88,7 +88,7 @@ class LiveReload extends BaseTask implements TaskInterface
      * @param string $host `bin` directory path where the executable file is located.
      * @return $this
      */
-    public function host($host = '127.0.0.1')
+    public function host($host)
     {
         $this->host = $host;
 
