@@ -18,12 +18,23 @@ trait LoadLiveReloadTaskTrait
 {
 
     /**
+     * Instance of the LiveReload task. Needed in order to easily send message to the WebSocket server.
+     *
+     * @var \Elephfront\RoboLiveReload\Task\LiveReload
+     */
+    public $liveReload;
+
+    /**
      * Exposes the LiveReload task.
      *
      * @return \Elephfront\RoboLiveReload\Task\LiveReload Instance of the Sass Task
      */
     protected function taskLiveReload()
     {
-        return $this->task(LiveReload::class);
+        if ($this->liveReload === null) {
+            $this->liveReload = $this->task(LiveReload::class);
+        }
+
+        return $this->liveReload;
     }
 }
