@@ -16,16 +16,44 @@ use Robo\Common\ExecCommand;
 use Robo\Contract\TaskInterface;
 use Robo\Task\BaseTask;
 
+/**
+ * Class LiveReload
+ *
+ * In charge on launching the WebSocket server that will act as the proxy between the browser and the Robo script
+ * running.
+ */
 class LiveReload extends BaseTask implements TaskInterface
 {
 
     use ExecCommand;
 
+    /**
+     * `bin` directory path where the executable file is located.
+     *
+     * @var string
+     */
     protected $binPath;
 
-    public function __construct($binPath)
+    /**
+     * LiveReload constructor.
+     *
+     * @param string $binPath `bin` directory path where the executable file is located.
+     */
+    public function __construct($binPath = 'vendor/bin/')
     {
         $this->setBinPath($binPath);
+    }
+
+    /**
+     * Sets the `bin` directory path where the executable file is located.
+     *
+     * @param $binPath
+     * @return self
+     */
+    protected function setBinPath($binPath)
+    {
+        $this->binPath = rtrim($binPath, '/') . '/';
+        return $this;
     }
 
     /**
@@ -37,10 +65,5 @@ class LiveReload extends BaseTask implements TaskInterface
         $command = sprintf('php %selephfront-robo-live-reload', $this->binPath);
         $this->background(true);
         return $this->executeCommand($command);
-    }
-
-    protected function setBinPath($binPath)
-    {
-        $this->binPath = rtrim($binPath, '/') . '/';
     }
 }
