@@ -15,6 +15,7 @@ namespace Elephfront\RoboLiveReload\Task;
 use Robo\Common\ExecCommand;
 use Robo\Contract\TaskInterface;
 use Robo\Task\BaseTask;
+use WebSocket\Client;
 
 /**
  * Class LiveReload
@@ -35,6 +36,13 @@ class LiveReload extends BaseTask implements TaskInterface
     protected $binPath;
 
     /**
+     * Instance of a WebSocket client.
+     *
+     * @var \WebSocket\Client
+     */
+    protected $wsClient;
+
+    /**
      * LiveReload constructor.
      *
      * @param string $binPath `bin` directory path where the executable file is located.
@@ -53,6 +61,7 @@ class LiveReload extends BaseTask implements TaskInterface
     protected function setBinPath($binPath)
     {
         $this->binPath = rtrim($binPath, '/') . '/';
+
         return $this;
     }
 
@@ -64,6 +73,31 @@ class LiveReload extends BaseTask implements TaskInterface
     {
         $command = sprintf('php %selephfront-robo-live-reload', $this->binPath);
         $this->background(true);
+
         return $this->executeCommand($command);
+    }
+
+    /**
+     * Gets a WebSocker Client instance in order to send message to the server.
+     *
+     * @return \WebSocket\Client Instance of a WebSocket client
+     */
+    public function getWsClient()
+    {
+        if (!($this->wsClient instanceof Client)) {
+            $this->wsClient = new Client('ws://127.0.0.1:22222/');
+        }
+
+        return $this->wsClient;
+    }
+
+    /**
+     * Sends a reload message to the WebSocket server.
+     *
+     * @return void
+     */
+    public function sendReloadMessage()
+    {
+        $this->getWsClient()->send('reload');
     }
 }
