@@ -16,14 +16,15 @@ use Elephfront\RoboLiveReload\Task\LiveReload;
 
 trait LoadLiveReloadTaskTrait
 {
-    
+
     /**
      * Exposes the LiveReload task.
      *
+     * @param string $binPath Path to the bin folder, where the executable file is located.
      * @return \Elephfront\RoboLiveReload\Task\LiveReload Instance of the Sass Task
      */
-    protected function taskLiveReload()
+    protected function taskLiveReload($binPath = 'vendor/bin/')
     {
-        return $this->task(LiveReload::class);
+        return $this->task(LiveReload::class, $binPath);
     }
 }

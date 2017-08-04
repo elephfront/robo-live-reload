@@ -24,14 +24,27 @@ class LiveReload extends BaseTask implements TaskInterface
      */
     use loadTasks;
 
+    protected $binPath;
+
+    public function __construct($binPath)
+    {
+        $this->setBinPath($binPath);
+    }
+
     /**
      * Start the LiveReload server as a background task.
      * @return \Robo\Result
      */
     public function run()
     {
-        return $this->taskExec('php bin/elephfront-robo-live-reload.php')
+        $command = sprintf('php %selephfront-robo-live-reload.php', $this->binPath);
+        return $this->taskExec($command)
             ->background()
             ->run();
+    }
+
+    protected function setBinPath($binPath)
+    {
+        $this->binPath = rtrim($binPath, '/') . '/';
     }
 }
