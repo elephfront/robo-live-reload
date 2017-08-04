@@ -23,7 +23,7 @@
             "Elephfront\\RoboLiveReload\\": "src"
         }
     },
-    "bin": ["bin/elephfront-robo-live-reload.php"],
+    "bin": ["bin/elephfront-robo-live-reload"],
     "autoload-dev": {
         "psr-4": {
             "Elephfront\\RoboLiveReload\\Tests\\": "tests/TestCase"
