@@ -20,11 +20,10 @@ trait LoadLiveReloadTaskTrait
     /**
      * Exposes the LiveReload task.
      *
-     * @param string $binPath Path to the bin folder, where the executable file is located.
      * @return \Elephfront\RoboLiveReload\Task\LiveReload Instance of the Sass Task
      */
-    protected function taskLiveReload($binPath = 'vendor/bin/')
+    protected function taskLiveReload()
     {
-        return $this->task(LiveReload::class, $binPath);
+        return $this->task(LiveReload::class);
     }
 }
