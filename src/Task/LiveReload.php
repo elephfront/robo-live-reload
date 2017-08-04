@@ -12,17 +12,14 @@
 declare(strict_types=1);
 namespace Elephfront\RoboLiveReload\Task;
 
+use Robo\Common\ExecCommand;
 use Robo\Contract\TaskInterface;
-use Robo\Task\Base\loadTasks;
 use Robo\Task\BaseTask;
 
 class LiveReload extends BaseTask implements TaskInterface
 {
 
-    /**
-     * Loads the `taskExec` method this class needs.
-     */
-    use loadTasks;
+    use ExecCommand;
 
     protected $binPath;
 
@@ -37,10 +34,9 @@ class LiveReload extends BaseTask implements TaskInterface
      */
     public function run()
     {
-        $command = sprintf('php %selephfront-robo-live-reload.php', $this->binPath);
-        return $this->taskExec($command)
-            ->background()
-            ->run();
+        $command = sprintf('php %selephfront-robo-live-reload', $this->binPath);
+        $this->background(true);
+        return $this->executeCommand($command);
     }
 
     protected function setBinPath($binPath)
