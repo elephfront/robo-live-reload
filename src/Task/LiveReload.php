@@ -29,13 +29,6 @@ class LiveReload extends BaseTask implements TaskInterface
     use ExecCommand;
 
     /**
-     * `bin` directory path where the executable file is located.
-     *
-     * @var string
-     */
-    protected $binPath;
-
-    /**
      * Instance of a WebSocket client.
      *
      * @var \WebSocket\Client
@@ -43,24 +36,61 @@ class LiveReload extends BaseTask implements TaskInterface
     protected $wsClient;
 
     /**
-     * LiveReload constructor.
+     * `bin` directory path where the executable file is located.
      *
-     * @param string $binPath `bin` directory path where the executable file is located.
+     * @var string
      */
-    public function __construct($binPath = 'vendor/bin/')
+    protected $bin;
+
+    /**
+     * Port the WebSocket server should be opened to.
+     *
+     * @var int
+     */
+    protected $port;
+
+    /**
+     * Host the WebSocket server should be hosted under.
+     *
+     * @var string
+     */
+    protected $host;
+
+    /**
+     * Sets the port the WebSocket server should expose.
+     *
+     * @param int $port
+     * @return $this
+     */
+    public function port($port = 22222)
     {
-        $this->setBinPath($binPath);
+        $this->port = $port;
+
+        return $this;
     }
 
     /**
      * Sets the `bin` directory path where the executable file is located.
      *
-     * @param $binPath
-     * @return self
+     * @param string $bin Host the WebSocket server should be hosted under.
+     * @return $this
      */
-    protected function setBinPath($binPath)
+    public function bin($bin = 'vendor/bin/')
     {
-        $this->binPath = rtrim($binPath, '/') . '/';
+        $this->bin = rtrim($bin, '/') . '/';
+
+        return $this;
+    }
+
+    /**
+     * Sets the `bin` directory path where the executable file is located.
+     *
+     * @param string $host `bin` directory path where the executable file is located.
+     * @return $this
+     */
+    public function host($host = '127.0.0.1')
+    {
+        $this->host = $host;
 
         return $this;
     }
@@ -71,7 +101,7 @@ class LiveReload extends BaseTask implements TaskInterface
      */
     public function run()
     {
-        $command = sprintf('php %selephfront-robo-live-reload', $this->binPath);
+        $command = sprintf('php %selephfront-robo-live-reload %s %d', $this->bin, $this->host, $this->port);
         $this->background(true);
 
         return $this->executeCommand($command);
@@ -85,7 +115,8 @@ class LiveReload extends BaseTask implements TaskInterface
     public function getWsClient()
     {
         if (!($this->wsClient instanceof Client)) {
-            $this->wsClient = new Client('ws://127.0.0.1:22222/');
+            $address = sprintf('ws://%s:%d/', $this->host, $this->port);
+            $this->wsClient = new Client($address);
         }
 
         return $this->wsClient;
