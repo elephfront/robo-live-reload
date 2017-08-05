@@ -43,6 +43,13 @@ class LiveReload extends BaseTask implements TaskInterface
     protected $bin = 'vendor/bin/';
 
     /**
+     * `bin` directory path where the executable file is located.
+     *
+     * @var string
+     */
+    protected $jsPath = 'src/system/LiveReload/assets/js/livereload.js';
+
+    /**
      * Port the WebSocket server should be opened to.
      *
      * @var int
@@ -83,9 +90,9 @@ class LiveReload extends BaseTask implements TaskInterface
     }
 
     /**
-     * Sets the `bin` directory path where the executable file is located.
+     * Sets the hostname the WebSocket server will be hosted on.
      *
-     * @param string $host `bin` directory path where the executable file is located.
+     * @param string $host The hostname the WebSocket server will be hosted on.
      * @return $this
      */
     public function host($host)
@@ -96,11 +103,29 @@ class LiveReload extends BaseTask implements TaskInterface
     }
 
     /**
+     * Sets the path where JS livereload code snippet will be copied.
+     *
+     * @param string $path Path to the javascript file (including the filename)
+     * @return $this
+     */
+    public function jsPath($path)
+    {
+        $this->jsPath = $path;
+
+        return $this;
+    }
+
+    /**
      * Start the LiveReload server as a background task.
      * @return \Robo\Result
      */
     public function run()
     {
+        $javascript = sprintf('var exampleSocket = new WebSocket(\'ws://%s:%d/\');exampleSocket.onmessage = function (event) {
+            if (event.data === \'reload\') {location.reload();}};', $this->host, $this->port);
+
+        file_put_contents($this->jsPath, $javascript);
+
         $command = sprintf('php %selephfront-robo-live-reload %s %d', $this->bin, $this->host, $this->port);
         $this->background(true);
 
