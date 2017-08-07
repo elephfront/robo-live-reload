@@ -90,14 +90,14 @@ TEXT;
             ->host('localhost')
             ->jsPath('tests/app/assets/livereload/livereload.js')
             ->run();
-        
+
         $this->assertTrue(file_exists('tests/app/assets/livereload/livereload.js'));
         $expected = <<<TEXT
 var exampleSocket = new WebSocket('ws://localhost:25852/');
 exampleSocket.onmessage = function(event) {if (event.data === 'reload') {location.reload();}};
 TEXT;
         $this->assertEquals($expected, file_get_contents('tests/app/assets/livereload/livereload.js'));
-        
+
         passthru('ps aux | grep "php" > tests/app/psaux');
         $processes = file_get_contents('tests/app/psaux');
         $this->assertNotFalse(strpos($processes, 'vendor/bin/elephfront-robo-live-reload localhost 25852'));
