@@ -121,8 +121,12 @@ class LiveReload extends BaseTask implements TaskInterface
      */
     public function run()
     {
-        $javascript = sprintf('var exampleSocket = new WebSocket(\'ws://%s:%d/\');exampleSocket.onmessage = function (event) {
-            if (event.data === \'reload\') {location.reload();}};', $this->host, $this->port);
+        $javascript = <<<TEXT
+var exampleSocket = new WebSocket('ws://%s:%d/');
+exampleSocket.onmessage = function(event) {if (event.data === 'reload') {location.reload();}};
+TEXT;
+
+        $javascript = sprintf($javascript, $this->host, $this->port);
 
         if (!is_dir(dirname($this->jsPath))) {
             mkdir(dirname($this->jsPath), 0755, true);

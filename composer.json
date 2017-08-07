@@ -26,7 +26,8 @@
     "bin": ["bin/elephfront-robo-live-reload"],
     "autoload-dev": {
         "psr-4": {
-            "Elephfront\\RoboLiveReload\\Tests\\": "tests/TestCase"
+            "Elephfront\\RoboLiveReload\\Tests\\": "tests/TestCase",
+            "Elephfront\\RoboLiveReload\\Tests\\Utility\\": "tests/Utility"
         }
     }
 }
