@@ -50,7 +50,7 @@ class LiveReloadMessager implements MessageComponentInterface
     {
         $this->clients->attach($connection);
 
-        echo sprintf('New connection ! (%s)', $connection->resourceId) . "\n";
+        echo 'New connection to the LiveReload server' . "\n";
     }
 
     /**
@@ -65,8 +65,7 @@ class LiveReloadMessager implements MessageComponentInterface
     {
         $targetCount = count($this->clients) - 1;
         echo sprintf(
-            'Connection `%d` sending message "%s" to %d other connection%s',
-            $connection->resourceId,
+            'Sending message "%s" to %d other connection%s',
             $message,
             $targetCount,
             $targetCount == 1 ? '' : 's'
@@ -90,7 +89,7 @@ class LiveReloadMessager implements MessageComponentInterface
     {
         $this->clients->detach($connection);
 
-        echo sprintf('Connection `%s` has disconnected', $connection->resourceId) . "\n";
+        echo 'Connection has disconnected' . "\n";
     }
 
     /**
@@ -101,7 +100,8 @@ class LiveReloadMessager implements MessageComponentInterface
      * @param \Exception $exception The exception thrown
      * @return void
      */
-    public function onError(ConnectionInterface $connection, \Exception $exception) {
+    public function onError(ConnectionInterface $connection, \Exception $exception)
+    {
         echo sprintf('An error has occurred: `%s`', $exception->getMessage()) . "\n";
 
         $connection->close();
