@@ -47,7 +47,7 @@ class LiveReload extends BaseTask implements TaskInterface
      *
      * @var string
      */
-    protected $jsPath = 'src/system/LiveReload/assets/js/livereload.js';
+    protected $jsPath = 'build/system/LiveReload/assets/js/livereload.js';
 
     /**
      * Port the WebSocket server should be opened to.
@@ -124,6 +124,9 @@ class LiveReload extends BaseTask implements TaskInterface
         $javascript = sprintf('var exampleSocket = new WebSocket(\'ws://%s:%d/\');exampleSocket.onmessage = function (event) {
             if (event.data === \'reload\') {location.reload();}};', $this->host, $this->port);
 
+        if (!is_dir(dirname($this->jsPath))) {
+            mkdir(dirname($this->jsPath), 0755, true);
+        }
         file_put_contents($this->jsPath, $javascript);
 
         $command = sprintf('php %selephfront-robo-live-reload %s %d', $this->bin, $this->host, $this->port);
