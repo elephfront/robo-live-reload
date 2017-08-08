@@ -73,6 +73,30 @@ Gives you the ability to change the bin path where the script that will start th
 
 Gives you the ability to change the path where the javascript file needed to make the browser listen to the Live Reload server and force the refresh will be located. By default, it will put it in the expected location of the build directory of an Elephfront project : `build/system/LiveReload/assets/js/livereload.js`. Based on your project setup, you may have to customize this value.
 
+## Notifying the LiveReload server
+
+To send a message to the Live Reload server so it can propagate it to the browser and the reload triggered, you can use the `sendReloadMessage()` of the task::
+ 
+```php
+use Elephfront\RoboLiveReload\Task\Loader\LoadLiveReloadTaskTrait;
+
+class RoboFile extends Tasks
+{
+
+    use LoadLiveReloadTaskTrait;
+    
+    public function someTask()
+    {
+        $this
+            ->taskLiveReload()
+            ->sendReloadMessage();
+    }
+}
+```
+
+This will send a "reload" message to the Live Reload server. If you load the `livereload.js` file created by the task, your browser will automatically reload when this message is received.  
+Typically, you will use this method when using a "watch" behavior so a reload can be triggered after your watch handler has been executed.
+
 ## Contributing
 
 If you find a bug or would like to ask for a feature, please use the [GitHub issue tracker](https://github.com/Elephfront/robo-live-reload/issues).
