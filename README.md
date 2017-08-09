@@ -89,6 +89,11 @@ class RoboFile extends Tasks
     {
         $this
             ->taskLiveReload()
+            ->run();
+            
+        // Further down...
+        $this
+            ->taskLiveReload()
             ->sendReloadMessage();
     }
 }
@@ -96,6 +101,31 @@ class RoboFile extends Tasks
 
 This will send a "reload" message to the Live Reload server. If you load the `livereload.js` file created by the task, your browser will automatically reload when this message is received.  
 Typically, you will use this method when using a "watch" behavior so a reload can be triggered after your watch handler has been executed.
+
+If you want to send another message to extend the behavior of the Live Reload server, you can have access to the WebSocket client using the `getWsClient()` method and send the message you want :
+
+```php
+use Elephfront\RoboLiveReload\Task\Loader\LoadLiveReloadTaskTrait;
+
+class RoboFile extends Tasks
+{
+
+    use LoadLiveReloadTaskTrait;
+    
+    public function someTask()
+    {
+        $this
+            ->taskLiveReload()
+            ->run();
+            
+        // Further down...
+        $this
+            ->taskLiveReload()
+            ->getWsClient()
+            ->send('your-message');
+    }
+}
+```
 
 ## Contributing
 
